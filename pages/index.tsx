@@ -26,13 +26,13 @@ class PostsPage extends React.Component<PostsProps> {
       this.props.fetchPosts()
     }
 
-    findUserName(userId) {
-      this.props.users.find((user: UserType) => user.id === userId)
+    findUserName({ userId }) {
+      const user = this.props.users.find((user: UserType) => user.id === userId)
+
+      return user && (user as UserType).name
     } 
 
     render() {
-        console.log('props', this.props)
-
         if (this.props.isFetchingPosts || this.props.isFetchingUsers) {
             return 'Loading'
         }
@@ -51,7 +51,7 @@ class PostsPage extends React.Component<PostsProps> {
                       <Post
                         key={post.id}
                         title={post.title}
-                        authorName={this.findUserName(post.userId)}
+                        authorName={this.findUserName(post)}
                         content={post.body}
                       />
                     )))
