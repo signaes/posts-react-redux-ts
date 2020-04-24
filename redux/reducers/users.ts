@@ -31,7 +31,6 @@ const usersReducer = (state = initialState, action) => {
                 isFetching: true
             }
         case LOADED_USERS:
-            console.log('LOADED_USERS', action)
             return {
                 ...state,
                 users: action.payload.users,

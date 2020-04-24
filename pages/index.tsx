@@ -26,7 +26,7 @@ class PostsPage extends React.Component<PostsProps> {
       this.props.fetchPosts()
     }
 
-    findUserName({ userId }) {
+    findUserName(userId) {
       const user = this.props.users.find((user: UserType) => user.id === userId)
 
       return user && (user as UserType).name
@@ -47,12 +47,12 @@ class PostsPage extends React.Component<PostsProps> {
             <main>
                 { 
                     this.props.hasFetchedPosts && this.props.hasFetchedUsers
-                    ? (this.props.posts.map((post: PostType) => (
+                    ? (this.props.posts.map(({ id, title, userId, body }: PostType) => (
                       <Post
-                        key={post.id}
-                        title={post.title}
-                        authorName={this.findUserName(post)}
-                        content={post.body}
+                        key={id}
+                        title={title}
+                        authorName={this.findUserName(userId)}
+                        body={body}
                       />
                     )))
                     : null

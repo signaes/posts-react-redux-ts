@@ -1,1 +1,8 @@
 @import 'base';
+
+main {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: .25em;
+    row-gap: .25em;
+}

@@ -30,8 +30,6 @@ export const fetchUsers = () => async dispatch => {
     try {
         const { data: users } = await getUsers();
 
-        console.log('users', users)
-
         dispatch(loadedUsers(users))
     } catch (err) {
         dispatch(errorUsers(err))
