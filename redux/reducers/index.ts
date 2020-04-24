@@ -1,10 +1,10 @@
-import counter from './counter'
 import posts from './posts'
+import users from './users'
 import { combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
-    counter,
-    posts
+    posts,
+    users
 })
 
 export default rootReducer

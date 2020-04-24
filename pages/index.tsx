@@ -2,24 +2,38 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import { fetchPosts } from '../redux/actions/posts'
+import { fetchUsers } from '../redux/actions/users'
 import { Post as PostType } from '../redux/reducers/posts'
+import { User as UserType } from '../redux/reducers/users'
 import Post from '../components/Post'
 
 interface PostsProps {
     posts?: [],
-    error?: any,
-    isFetching: boolean,
-    hasFetched: boolean,
-    fetchPosts: any
+    postsError?: any,
+    isFetchingPosts: boolean,
+    hasFetchedPosts: boolean,
+    fetchPosts: any,
+    users?: [],
+    usersError?: any,
+    isFetchingUsers: boolean,
+    hasFetchedUsers: boolean,
+    fetchUsers: any
 }
 
 class PostsPage extends React.Component<PostsProps> {
-    componentDidMount() {
+    async componentDidMount() {
+      await this.props.fetchUsers()
       this.props.fetchPosts()
     }
 
+    findUserName(userId) {
+      this.props.users.find((user: UserType) => user.id === userId)
+    } 
+
     render() {
-        if (this.props.isFetching) {
+        console.log('props', this.props)
+
+        if (this.props.isFetchingPosts || this.props.isFetchingUsers) {
             return 'Loading'
         }
 
@@ -32,11 +46,12 @@ class PostsPage extends React.Component<PostsProps> {
 
             <main>
                 { 
-                    this.props.hasFetched
+                    this.props.hasFetchedPosts && this.props.hasFetchedUsers
                     ? (this.props.posts.map((post: PostType) => (
                       <Post
+                        key={post.id}
                         title={post.title}
-                        authorName={post.author}
+                        authorName={this.findUserName(post.userId)}
                         content={post.body}
                       />
                     )))
@@ -52,15 +67,23 @@ class PostsPage extends React.Component<PostsProps> {
     }
 }
 
-const mapStateToProps = ({ posts: { posts, error, isFetching, hasFetched } }) => ({
+const mapStateToProps = ({
+  posts: { posts = [], error: postsError, isFetching: isFetchingPosts, hasFetched: hasFetchedPosts },
+  users: { users = [], error: usersError, isFetching: isFetchingUsers, hasFetched: hasFetchedUsers }
+}) => ({
     posts,
-    error,
-    isFetching,
-    hasFetched
+    postsError,
+    isFetchingPosts,
+    hasFetchedPosts,
+    users,
+    usersError,
+    isFetchingUsers,
+    hasFetchedUsers
 })
 
 const mapDispatchToProps = {
-    fetchPosts
+    fetchPosts,
+    fetchUsers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostsPage)

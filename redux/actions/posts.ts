@@ -1,29 +1,25 @@
 import { getPosts } from '../../api/posts'
+import { ReduxAction, ActionCreatorFunc } from './types'
 
-enum PostsActionType {
-   FETCH_POSTS, 
-   LOADED_POSTS,
-   ERROR_POSTS
+type PostsActionTypes = 'FETCH_POSTS' | 'LOADED_POSTS' | 'ERROR_POSTS' 
+const PostsActionType = {
+   FETCH_POSTS: 'FETCH_POSTS', 
+   LOADED_POSTS: 'LOADED_POSTS',
+   ERROR_POSTS: 'ERROR_POSTS'
 }
 
-export interface PostsAction {
-    type: PostsActionType;
-    payload?: any;
-}
+export type PostsAction = ReduxAction<PostsActionTypes>
 
-export type ActionFunc = (payload?: any) => PostsAction
+export const FETCH_POSTS = (PostsActionType.FETCH_POSTS as PostsActionTypes)
+export const LOADED_POSTS = (PostsActionType.LOADED_POSTS as PostsActionTypes)
+export const ERROR_POSTS = (PostsActionType.ERROR_POSTS as PostsActionTypes)
 
-export const FETCH_POSTS = PostsActionType.FETCH_POSTS
-export const LOADED_POSTS = PostsActionType.LOADED_POSTS
-export const ERROR_POSTS = PostsActionType.ERROR_POSTS
-
-
-export const loadedPosts: ActionFunc = (posts) => ({
+export const loadedPosts: ActionCreatorFunc<PostsAction> = (posts) => ({
     type: LOADED_POSTS,
     payload: { posts }
 })
 
-export const errorPosts: ActionFunc = (error) => ({
+export const errorPosts: ActionCreatorFunc<PostsAction> = (error) => ({
     type: ERROR_POSTS,
     payload: { error }
 })

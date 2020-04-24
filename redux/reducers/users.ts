@@ -1,49 +1,48 @@
 import {
-   LOADED_POSTS,
-   ERROR_POSTS, 
-   FETCH_POSTS
-} from '../actions/posts';
+   LOADED_USERS,
+   ERROR_USERS, 
+   FETCH_USERS
+} from '../actions/users';
 
-export interface Post {
+export interface User {
     id: number;
-    userId: number;
-    title: string;
-    body: string;
+    name: string;
 }
 
-interface PostsState {
-    posts?: Post[];
+interface UsersState {
+    users?: User[];
     error?: any;
     isFetching: boolean;
     hasFetched: boolean;
 }
 
-const initialState: PostsState = {
-    posts: [],
+const initialState: UsersState = {
+    users: [],
     error: null,
     isFetching: false,
     hasFetched: false
 }
 
-const postsReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_POSTS:
+        case FETCH_USERS:
             return {
                 ...state,
                 isFetching: true
             }
-        case LOADED_POSTS:
+        case LOADED_USERS:
+            console.log('LOADED_USERS', action)
             return {
                 ...state,
-                posts: action.payload.posts,
+                users: action.payload.users,
                 isFetching: false,
                 hasFetched: true
             }
-        case ERROR_POSTS:
+        case ERROR_USERS:
             return {}
         default:
             return {...state}
     }
 }
 
-export default postsReducer
+export default usersReducer
